@@ -18,8 +18,8 @@ namespace MatchServer
   public  class LanchServer
     {
         private static int preport = 0;
-        public const int startingport = 7777;
-        public const string  serverip = "192.168.1.240";
+        public const int startingport = 8880;
+        public const string  serverip = "120.55.126.186";//WAN
         public static Process launchserver(int port)
         {
             string Arguments = string.Format(" -log=ue.log -port={0}",port);
@@ -35,7 +35,7 @@ namespace MatchServer
                     // apppath = @"G:\UE4projects\MyProject20\win\WindowsNoEditor\MyProject20\Binaries\Win64\UEWebsocketServer.exe";
                     //apppath = @"G:\UE4projects\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
                     // apppath = @"C:\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
-                    // apppath = @"C:\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
+                     apppath = @"C:\New folder\WindowsNoEditor\MyProjectfps\Binaries\Win64\UEWebsocketServer.exe";
                     myProcess.StartInfo.FileName = apppath;
                     //myProcess.StartInfo.FileName = @"G:\UE4 projects\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
                     myProcess.StartInfo.Arguments = Arguments;

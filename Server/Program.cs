@@ -39,7 +39,7 @@ namespace MatchServer
 
         static void Main(string[] args)
         {
-            IPAddress ipAd = IPAddress.Parse("192.168.1.240");
+            IPAddress ipAd = IPAddress.Parse("172.16.5.188");//local ip address
             TcpListener myList = new TcpListener(ipAd, 8001);
             /* Start Listeneting at the specified port */
             myList.Start();
