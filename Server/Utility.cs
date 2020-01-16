@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-
-namespace Server
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+namespace MatchServer
 {
     class Utility
     {
@@ -30,6 +31,26 @@ namespace Server
             {
                 // Log.Error(e);
             }
+        }
+        public static bool IsValidJson(string Input)
+        {
+            Input = Input.Trim();
+                try
+                {
+                    var obj = JToken.Parse(Input);
+                    return true;
+                }
+                catch (JsonReaderException jex)
+                {
+                    //Exception in parsing json
+                    Console.WriteLine(jex.Message);
+                    return false;
+                }
+                catch (Exception ex) //some other exception
+                {
+                    Console.WriteLine(ex.ToString());
+                    return false;
+                }
         }
     }
 }

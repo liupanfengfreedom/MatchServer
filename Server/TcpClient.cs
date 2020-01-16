@@ -128,11 +128,25 @@ namespace MatchServer
                     isfile = true;
                     return;
                 }
-
+                bool bisjson = Utility.IsValidJson(str);
+                if (!bisjson)
+                {
+                    killthegameclient();
+                    return;
+                }
                 mp = JsonConvert.DeserializeObject<FMessagePackage>(str);
                 switch (mp.MT)
                 {
                     case MessageType.MATCH:
+/////////////////////////////////////////////////////
+                        ///
+                        lock (Program.singinLock)
+                        {
+                            Program.singinpool.Add(this);
+                        }
+                        int singinpoollen = Program.singinpool.Count;
+                        Console.WriteLine("singinpool " + singinpoollen.ToString());
+ //////////////////////
                         String[] strarray = mp.PayLoad.Split('?');
                         map = strarray[0];//map
                         mapID = strarray[1];//mapID
@@ -152,13 +166,15 @@ namespace MatchServer
 
             }
             catch(Newtonsoft.Json.JsonSerializationException){//buffer all zero//occur when mobile client force kill the game client
-                mclosed = true;
-                CloseSocket();
-                room?.Remove(this);
-                ReceiveThread.Abort();
+                killthegameclient();
             }
-
-
+        }
+        void killthegameclient()
+        {
+            mclosed = true;
+            CloseSocket();
+            room?.Remove(this);
+            ReceiveThread.Abort();
         }
     }
 }

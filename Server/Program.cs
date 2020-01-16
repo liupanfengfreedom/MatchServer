@@ -32,9 +32,9 @@ namespace MatchServer
     class Program
     {
         private static readonly object matchLock = new object();
-        private static readonly object singinLock = new object();
+        public static readonly object singinLock = new object();
         static List<TCPClienttype> AllWaitforMatchpools = new List<TCPClienttype>();
-        static List<TCPClient> singinpool = new List<TCPClient>();
+        static public List<TCPClient> singinpool = new List<TCPClient>();
         static List<Room> roomlist = new List<Room>();
         static TcpListener myList;
         static void Main(string[] args)
@@ -62,12 +62,6 @@ namespace MatchServer
                 int id = Thread.CurrentThread.ManagedThreadId;
                 Socket st = await myList.AcceptSocketAsync();
                 TCPClient tcpClient = new TCPClient(st);
-                lock (singinLock)
-                {
-                    singinpool.Add(tcpClient);
-                }
-                int len = singinpool.Count;
-                Console.WriteLine("singinpool " + len.ToString());
             }
         }
         static void Matchalgorithm()
