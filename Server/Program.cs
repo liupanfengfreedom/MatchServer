@@ -36,26 +36,37 @@ namespace MatchServer
         static List<TCPClienttype> AllWaitforMatchpools = new List<TCPClienttype>();
         static List<TCPClient> singinpool = new List<TCPClient>();
         static List<Room> roomlist = new List<Room>();
-
+        static TcpListener myList;
         static void Main(string[] args)
         {
             IPAddress ipAd = IPAddress.Parse("172.16.5.188");//local ip address
-            TcpListener myList = new TcpListener(ipAd, 8001);
+            myList = new TcpListener(ipAd, 8001);
             /* Start Listeneting at the specified port */
             myList.Start();
             Thread matchalgorithm = new Thread(new ThreadStart(Matchalgorithm));
             Thread matchalhelp = new Thread(new ThreadStart(singinpooltomatchpool));
             matchalhelp.Start();
             matchalgorithm.Start();
+            Accept();
+            int id = Thread.CurrentThread.ManagedThreadId;
+
             while (true)
             {
-                Socket st = myList.AcceptSocket();
+                Thread.Sleep(50);
+            }
+        }
+       static async void Accept()
+        {
+            while (true)
+            {
+                int id = Thread.CurrentThread.ManagedThreadId;
+                Socket st = await myList.AcceptSocketAsync();
                 TCPClient tcpClient = new TCPClient(st);
                 lock (singinLock)
                 {
                     singinpool.Add(tcpClient);
                 }
-                int len = singinpool.Count;    
+                int len = singinpool.Count;
                 Console.WriteLine("singinpool " + len.ToString());
             }
         }
