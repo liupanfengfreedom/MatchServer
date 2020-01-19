@@ -52,6 +52,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="TcpClient.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="window_file_log.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -33,6 +33,7 @@ namespace MatchServer
         string filestringpayload;
         bool isfile = false;
         Thread ReceiveThread;
+        Thread KeepAliveThread;
         public bool getentrymapisok() {
             return entrymapok;
         }
@@ -42,9 +43,14 @@ namespace MatchServer
             entrymapok = false;
             clientsocket = msocket;
             OnReceivedCompletePointer += messagehandler;
+
             ReceiveThread = new Thread(new ThreadStart(ReceiveLoop));
             ReceiveThread.IsBackground = true;
-            ReceiveThread.Start();      
+            ReceiveThread.Start();
+
+            KeepAliveThread = new Thread(new ThreadStart(keeptcpalive));
+            KeepAliveThread.IsBackground = true;
+            KeepAliveThread.Start();
         }
         ~TCPClient()
         {
@@ -169,12 +175,28 @@ namespace MatchServer
                 killthegameclient();
             }
         }
+        void keeptcpalive()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000*60);
+                bool bconnected = this.clientsocket.Connected;
+                if (bconnected)
+                {
+                    this.Send("keepalive");
+                }
+                else {
+                    killthegameclient();
+                }
+            }
+        }
         void killthegameclient()
         {
             mclosed = true;
             CloseSocket();
             room?.Remove(this);
             ReceiveThread.Abort();
+            KeepAliveThread.Abort();
         }
     }
 }

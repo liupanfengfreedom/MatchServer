@@ -45,16 +45,30 @@ namespace MatchServer
             myList.Start();
             Thread matchalgorithm = new Thread(new ThreadStart(Matchalgorithm));
             Thread matchalhelp = new Thread(new ThreadStart(singinpooltomatchpool));
+            Thread tcplistenthread = new Thread(new ThreadStart(tcplistenthreadwork));
+            matchalhelp.IsBackground = true;
             matchalhelp.Start();
+            matchalgorithm.IsBackground = true;
             matchalgorithm.Start();
-            Accept();
+            tcplistenthread.IsBackground = true;
+            tcplistenthread.Start();
             int id = Thread.CurrentThread.ManagedThreadId;
 
             while (true)
             {
-                Thread.Sleep(50);
+                bool b = tcplistenthread.IsAlive;
+                if (!b)
+                {
+                    tcplistenthread = new Thread(new ThreadStart(tcplistenthreadwork));
+                    tcplistenthread.IsBackground = true;
+                    tcplistenthread.Start();
+                    Console.WriteLine("tcplistenthread restart");
+                    window_file_log.Log("tcplistenthread restart");
+                }
+                Thread.Sleep(1000);
             }
         }
+
        static async void Accept()
         {
             while (true)
@@ -62,6 +76,17 @@ namespace MatchServer
                 int id = Thread.CurrentThread.ManagedThreadId;
                 Socket st = await myList.AcceptSocketAsync();
                 TCPClient tcpClient = new TCPClient(st);
+            }
+        }
+        static void tcplistenthreadwork()
+        {
+            int id = Thread.CurrentThread.ManagedThreadId;
+            Accept();
+            while (true)
+            {
+                Thread.Sleep(10000);
+                Console.WriteLine("tcplistenthread is alive");
+                window_file_log.Log("tcplistenthread is alive");
             }
         }
         static void Matchalgorithm()
