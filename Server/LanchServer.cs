@@ -32,11 +32,11 @@ namespace MatchServer
                     // You can start any process, HelloWorld is a do-nothing example.
                     string apppath = @"D:\SVNprository\program\Project\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
                     //apppath = @"D:\SVNprository\program\Project\InfiniteLife1_1\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
-                    // apppath = @"G:\UE4projects\MyProject20\win\WindowsNoEditor\MyProject20\Binaries\Win64\UEWebsocketServer.exe";
                     //apppath = @"G:\UE4projects\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
                     // apppath = @"C:\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
-                     apppath = @"C:\New folder\WindowsNoEditor\MyProjectfps\Binaries\Win64\UEWebsocketServer.exe";
-                    myProcess.StartInfo.FileName = apppath;
+                     apppath = @"C:\New folder\MyProjectfps\MyProjectfps\Binaries\Win64\UEWebsocketServer.exe";
+                     apppath = @"C:\tv1audio\WindowsNoEditor\tv1\Binaries\Win64\UEWebsocketServer.exe";
+                    myProcess.StartInfo.FileName = Program.config.configinfor.serverexepath; //apppath;
                     //myProcess.StartInfo.FileName = @"G:\UE4 projects\InfiniteLife1_0\win\WindowsNoEditor\InfiniteLife1_0\Binaries\Win64\UEWebsocketServer.exe";
                     myProcess.StartInfo.Arguments = Arguments;
                     //myProcess.StartInfo.Arguments = " -log=myue.log  -port=7788";

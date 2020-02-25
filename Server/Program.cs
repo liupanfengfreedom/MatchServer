@@ -37,10 +37,12 @@ namespace MatchServer
         static public List<TCPClient> singinpool = new List<TCPClient>();
         static List<Room> roomlist = new List<Room>();
         static TcpListener myList;
+        public static Config config = new Config();
         static void Main(string[] args)
         {
-            IPAddress ipAd = IPAddress.Parse("172.16.5.188");//local ip address
-            myList = new TcpListener(ipAd, 8001);
+             
+            IPAddress ipAd = IPAddress.Parse(config.configinfor.ipaddress);//local ip address  "172.16.5.188"
+            myList = new TcpListener(ipAd, config.configinfor.ipport);//8001
             /* Start Listeneting at the specified port */
             myList.Start();
             Thread matchalgorithm = new Thread(new ThreadStart(Matchalgorithm));
@@ -85,8 +87,8 @@ namespace MatchServer
             while (true)
             {
                 Thread.Sleep(10000);
-                Console.WriteLine("tcplistenthread is alive");
-                window_file_log.Log("tcplistenthread is alive");
+                //Console.WriteLine("tcplistenthread is alive");
+                //window_file_log.Log("tcplistenthread is alive");
             }
         }
         static void Matchalgorithm()
@@ -108,7 +110,7 @@ namespace MatchServer
                                 int nvn=0;
                                 if (!Int32.TryParse(AllWaitforMatchpools[j].nvn, out nvn))
                                 {
-                                    nvn = 2;
+                                    nvn = 16;
                                 }
                                 AllWaitforMatchpools[j].currentroom = new Room(nvn, LanchServer.CreateOneRoom());//the client who create room determine the nvn 
                                 AllWaitforMatchpools[j].currentroom.listroom = roomlist;
