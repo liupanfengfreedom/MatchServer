@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace MatchServer
 {
-    class TCPClienttype
+   public class TCPClienttype
     {
         public  string map;
         public string mapID;

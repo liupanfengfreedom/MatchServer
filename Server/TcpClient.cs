@@ -11,14 +11,16 @@ namespace MatchServer
 {
    // public delegate void OnReceivedCompleted(List<byte>mcontent);
     public delegate void OnReceivedCompleted(byte[] buffer);
- class TCPClient
+    public delegate void OnJoinroom(Room room);
+ public class TCPClient
     {
         public String map { private set; get; }
         public String mapID { private set; get; }
         public String vip { private set; get; }
         public String rank { private set; get; }
         public String nvn { private set; get; }
-
+        private String guid;
+        public OnJoinroom onjoinroom;
         /// <summary>
         /// //////////////////////////////////////////////
         /// </summary>
@@ -29,6 +31,8 @@ namespace MatchServer
         public OnReceivedCompleted OnReceivedCompletePointer=null;
         bool entrymapok;
         const int BUFFER_SIZE = 65536;
+        const int SENDBUFFER_SIZE = 4096;
+        byte[] sendbuffer = new byte[SENDBUFFER_SIZE];
         public byte[] receivebuffer = new byte[BUFFER_SIZE];
         string filestringpayload;
         bool isfile = false;
@@ -42,6 +46,7 @@ namespace MatchServer
             Console.WriteLine("TCPClient "+ msocket.RemoteEndPoint);
             entrymapok = false;
             clientsocket = msocket;
+            clientsocket.NoDelay = false;//false send immediately,this seem is opposite to msdn document
             OnReceivedCompletePointer += messagehandler;
 
             ReceiveThread = new Thread(new ThreadStart(ReceiveLoop));
@@ -51,16 +56,42 @@ namespace MatchServer
             KeepAliveThread = new Thread(new ThreadStart(keeptcpalive));
             KeepAliveThread.IsBackground = true;
             KeepAliveThread.Start();
+            onjoinroom += AssignNumber;
+            //AssignGUID();
         }
         ~TCPClient()
         {
             Console.WriteLine("TCPClient In destructor.");
+        }
+        private void AssignGUID()
+        {
+            Guid g;
+            // Create and display the value of two GUIDs.
+            g = Guid.NewGuid();
+            string guidstring = g.ToString();
+            FMessagePackage mp = new FMessagePackage();
+            mp.MT = MessageType.GUID;
+            mp.PayLoad = guidstring;
+            String str = JsonConvert.SerializeObject(mp);
+            Send(str);
+        }
+        private void AssignNumber(Room room)
+        {
+            FMessagePackage mp = new FMessagePackage();
+            mp.MT = MessageType.NUMBER;
+            mp.PayLoad = room.entrycounter.ToString();
+            String str = JsonConvert.SerializeObject(mp);
+            Send(str);
         }
         public void Send(byte[] buffer)
         {
             if (clientsocket != null)
             {
                 clientsocket.Send(buffer);
+                //buffer.CopyTo(sendbuffer, 0);
+                //clientsocket.Send(sendbuffer);
+                //Array.Clear(sendbuffer, 0, SENDBUFFER_SIZE);
+                Thread.Sleep(200);
             }
         }
         public void Send(String message)
@@ -72,7 +103,7 @@ namespace MatchServer
 #endif
             if (clientsocket != null)
             {
-                clientsocket.Send(asen.GetBytes(message));
+                this.Send(asen.GetBytes(message));
             }
         }
         void ReceiveLoop()
@@ -198,5 +229,6 @@ namespace MatchServer
             ReceiveThread.Abort();
             KeepAliveThread.Abort();
         }
+
     }
 }

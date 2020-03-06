@@ -28,6 +28,8 @@ namespace MatchServer
         MAPISFULL,//the number in the map has reach the ceilling
         EXITGAME,
         FILERECEIVEOK,//server side receive ok
+        GUID,
+        NUMBER,
     }
     struct FMessagePackage
     {
@@ -45,8 +47,9 @@ namespace MatchServer
         public Thread threadkiller;
         public bool runing;
     }
-    class Room
+    public class Room
     {
+        public byte entrycounter {get;private set;}
         public TCPClienttype tcpclienttype;
         public List<Room> listroom;
         public string map;
@@ -57,6 +60,7 @@ namespace MatchServer
         processkiller pker = new processkiller();
         public Room(int maxpeople, Roomipprocess rp)
         {
+            entrycounter = 0;
             this.roomipaddress = rp.mip;
             this.maxpeople = maxpeople;
             this.mprocess = rp.mprocess;
@@ -75,6 +79,8 @@ namespace MatchServer
         {
             mtc.room = this;
             mPeopleinroom.Add(mtc);
+            mtc.onjoinroom.Invoke(this);
+            entrycounter++;
 #if MODE1
             ///////////////////
             ///
@@ -169,7 +175,7 @@ namespace MatchServer
                     destroythisroom();
                     break;
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(200);
             }
 
         }
