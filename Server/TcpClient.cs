@@ -46,7 +46,7 @@ namespace MatchServer
             Console.WriteLine("TCPClient "+ msocket.RemoteEndPoint);
             entrymapok = false;
             clientsocket = msocket;
-            clientsocket.NoDelay = false;//false send immediately,this seem is opposite to msdn document
+            clientsocket.NoDelay = true;//false send immediately,this seem is opposite to msdn document
             OnReceivedCompletePointer += messagehandler;
 
             ReceiveThread = new Thread(new ThreadStart(ReceiveLoop));
@@ -91,7 +91,7 @@ namespace MatchServer
                 //buffer.CopyTo(sendbuffer, 0);
                 //clientsocket.Send(sendbuffer);
                 //Array.Clear(sendbuffer, 0, SENDBUFFER_SIZE);
-                Thread.Sleep(200);
+                Thread.Sleep(300);
             }
         }
         public void Send(String message)

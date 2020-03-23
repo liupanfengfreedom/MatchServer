@@ -35,9 +35,10 @@ namespace MatchServer
         public static readonly object singinLock = new object();
         static List<TCPClienttype> AllWaitforMatchpools = new List<TCPClienttype>();
         static public List<TCPClient> singinpool = new List<TCPClient>();
-        static List<Room> roomlist = new List<Room>();
+        public static List<Room> roomlist = new List<Room>();
         static TcpListener myList;
         public static Config config = new Config();
+        static Reportroomlist reportroomlist = new Reportroomlist();
         static void Main(string[] args)
         {
              
@@ -115,6 +116,7 @@ namespace MatchServer
                                 AllWaitforMatchpools[j].currentroom = new Room(nvn, LanchServer.CreateOneRoom());//the client who create room determine the nvn 
                                 AllWaitforMatchpools[j].currentroom.listroom = roomlist;
                                 AllWaitforMatchpools[j].currentroom.tcpclienttype = AllWaitforMatchpools[j];
+                                roomlist.Add(AllWaitforMatchpools[j].currentroom);
                                //Thread.Sleep(100);//wait IP port take effect
                             }
                             TCPClient temp = AllWaitforMatchpools[j].MatchHashsetPool.ElementAt(i); ;

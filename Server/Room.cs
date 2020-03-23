@@ -55,7 +55,7 @@ namespace MatchServer
         public string map;
         List<TCPClient> mPeopleinroom;
         int maxpeople = 0;
-        string roomipaddress;
+        public string roomipaddress;
         public Process mprocess { get; private set; }
         processkiller pker = new processkiller();
         public Room(int maxpeople, Roomipprocess rp)
@@ -175,7 +175,7 @@ namespace MatchServer
                     destroythisroom();
                     break;
                 }
-                Thread.Sleep(200);
+                Thread.Sleep(1000*60*5);
             }
 
         }
