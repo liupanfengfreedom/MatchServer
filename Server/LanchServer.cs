@@ -18,8 +18,8 @@ namespace MatchServer
   public  class LanchServer
     {
         private static int preport = 0;
-        public const int startingport = 8880;
-        public const string  serverip = "120.55.126.186";//WAN
+        public const int startingport = 7000;
+        public const string  serverip = "kuxue.f3322.net";//WAN
         public static Process launchserver(int port)
         {
             string Arguments = string.Format(" -log=ue.log -port={0}",port);

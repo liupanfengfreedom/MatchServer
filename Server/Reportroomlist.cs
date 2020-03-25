@@ -78,7 +78,7 @@ namespace MatchServer
                     }
                     string strPayload = JsonConvert.SerializeObject(payload);
                     HttpContent httpContent = new StringContent(strPayload, Encoding.UTF8, "application/json");
-                    HttpclientHelper.httppost("http://172.16.5.188:7001/", httpContent);
+                    HttpclientHelper.httppost("http://192.168.1.41:7001/", httpContent);
                 }
                 catch (Exception e)
                 {
