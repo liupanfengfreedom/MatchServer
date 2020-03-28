@@ -13,6 +13,8 @@ namespace MatchServer
         public struct Configinfor
         {
             public String ipaddress;
+            public String wanipaddress;
+            public String httpipaddress;
             public int ipport;
             public String serverexepath;
         }

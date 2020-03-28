@@ -87,18 +87,17 @@ namespace MatchServer
         {
             if (clientsocket != null)
             {
-                try {
-                    clientsocket.Send(buffer);
-                    //buffer.CopyTo(sendbuffer, 0);
-                    //clientsocket.Send(sendbuffer);
-                    //Array.Clear(sendbuffer, 0, SENDBUFFER_SIZE);
-                    Thread.Sleep(300);
-                }
-                catch (Exception e)
+                try
                 {
+                    clientsocket.Send(buffer);
+                }
+                catch (Exception e) {
                     Console.WriteLine(e);
                 }
-
+                //buffer.CopyTo(sendbuffer, 0);
+                //clientsocket.Send(sendbuffer);
+                //Array.Clear(sendbuffer, 0, SENDBUFFER_SIZE);
+                Thread.Sleep(300);
             }
         }
         public void Send(String message)

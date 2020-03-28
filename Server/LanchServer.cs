@@ -19,7 +19,7 @@ namespace MatchServer
     {
         private static int preport = 0;
         public const int startingport = 7000;
-        public const string  serverip = "kuxue.f3322.net";//WAN
+        public const string serverip = "120.55.126.186";//WAN
         public static Process launchserver(int port)
         {
             string Arguments = string.Format(" -log=ue.log -port={0}",port);
@@ -94,7 +94,7 @@ namespace MatchServer
             Roomipprocess rp = new Roomipprocess();
             int port = GetOneAvailablePort();
             rp.mprocess = launchserver(port);
-            string roomip = serverip;
+            string roomip = Program.config.configinfor.wanipaddress; //serverip;
             roomip += ":";
             roomip += port.ToString();
             rp.mip = roomip;
